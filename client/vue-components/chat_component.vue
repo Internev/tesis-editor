@@ -2,12 +2,18 @@
 <div>
     <h3>Chat</h3>
     <div>
-        <textarea>
-    </textarea>
+      {{ msg }}
     </div>
-    <input type="text" name="" value="" />
+    <input v-model="msg" type="text" name="" value="" />
 </div>
 </template>
 <script>
+export default {
+  data() {
+    return {
+      msg: ''
+    }
+  }
+}
 
 </script>
