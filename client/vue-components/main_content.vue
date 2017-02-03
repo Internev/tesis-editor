@@ -11,7 +11,7 @@
 
         <div class="cl-content" :class="[stats ? 'start' : 'end']">
           <statcomponent :quill="quill" v-show="stats"></statcomponent>
-          <chatcomponent v-show="!stats"></chatcomponent>
+          <chatcomponent :ws="ws" v-show="!stats"></chatcomponent>
 
           <div class="info-con" v-show="!stats">
             <div class="doc-info">
@@ -55,14 +55,16 @@
       let c = this.$route.params.channel
       const token = auth.getToken();
       this.uri = c !== undefined && /^\w{5}$/.test(c) ? c : chance.word({length: 5})
+
+      this.ws = new WebSocket(`ws://${window.location.host}/ws/${this.uri}`);
       //create RTC websocket
-      this.wsrtc = new WebSocket(`wss://${window.location.host}/ws/${this.uri}rtc`);
+      // this.wsrtc = new WebSocket(`wss://${window.location.host}/ws/${this.uri}rtc`)
       // update URL display. I still think we can do this with router somehow :S
-      window.history.pushState(window.location.origin, '/', this.uri);
+      window.history.pushState(window.location.origin, '/', this.uri)
       // If token exists
       if (token) {
         // Checks if token in computer is valid then gets user resource
-        auth.getJwt(this, token);
+        auth.getJwt(this, token)
       }
     },
     mounted() {
@@ -73,26 +75,26 @@
       // console.log(socket, this.wsrtc)
 
       // For testing reconnection
-      window.disconnect = function() {
-        connection.close();
-      }
-      window.connect = function(uri) {
-        let socket = new WebSocket(`ws://${window.location.host}`);
-        connection.bindToSocket(socket);
-      }
+      // window.disconnect = function() {
+      //   connection.close();
+      // }
+      // window.connect = function(uri) {
+      //   let socket = new WebSocket(`ws://${window.location.host}`);
+      //   connection.bindToSocket(socket);
+      // }
       // Storing doc inside editor for access in other components.
-      editor.doc = connection.get('docs', this.uri);
+      editor.doc = connection.get('docs', this.uri)
       // New quill
       editor.makeQuill();
 
       editor.quillOn(this, editor.doc);
-      editor.docSubscribe(editor.quill, editor.doc);
+      editor.docSubscribe(editor.quill, editor.doc)
       this.quill = editor.quill
     },
     data() {
       return {
         ws: null,
-        wsrtc: null,
+        // wsrtc: null,
         channel: '',
         count: 0,
         user: auth.user,
