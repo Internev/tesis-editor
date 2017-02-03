@@ -1,7 +1,7 @@
 <template>
 <div>
     <h3>Chat</h3>
-    <div>
+    <div id="chatbox">
       <div v-for="msg in chat"> {{ msg }}</div>
     </div>
     <input v-model="msg" @keyup.enter="chatMsg" type="text" name="" value="" />
@@ -18,7 +18,6 @@ export default {
   props: ['ws'],
   mounted() {
     this.ws.onmessage = (m) => {
-      console.log(m)
       this.chat.push(m.data)
     }
   },
@@ -26,8 +25,21 @@ export default {
     chatMsg () {
       this.ws.send(this.msg)
       this.msg = ''
+      let ch =document.getElementById("chatbox")
+      ch.scrollTop = ch.scrollHeight - ch.clientHeight
     }
   }
 }
 
 </script>
+
+<style>
+#chatbox{
+  height: 30vh;
+  width: auto;
+  overflow: auto;
+}
+input{
+  background-color: white;
+}
+</style>
