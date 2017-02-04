@@ -11,7 +11,7 @@
 
         <div class="cl-content" :class="[stats ? 'start' : 'end']">
           <statcomponent :quill="quill" v-show="stats"></statcomponent>
-          <chatcomponent :ws="ws" v-show="!stats"></chatcomponent>
+          <chatcomponent :ws="ws" :name="name" v-show="!stats"></chatcomponent>
 
           <div class="info-con" v-show="!stats">
             <div class="doc-info">
@@ -36,7 +36,6 @@
 <script>
   import Navbar from './navbar.vue'
   import Methods from '../js/main_content.js'
-  import Videocomponent from './video_component.vue'
   import Audiocomponent from './audio_component.vue'
   import {textStats, docSubscribe} from '../js/editor.js'
   import sharedb from 'sharedb/lib/client'
@@ -56,7 +55,10 @@
       const token = auth.getToken();
       this.uri = c !== undefined && /^\w{5}$/.test(c) ? c : chance.word({length: 5})
 
-      this.ws = new WebSocket(`ws://${window.location.host}/ws/${this.uri}`);
+      this.ws = new WebSocket(`ws://${window.location.host}/ws/${this.uri}`)
+
+      this.name = chance.first()
+
       //create RTC websocket
       // this.wsrtc = new WebSocket(`wss://${window.location.host}/ws/${this.uri}rtc`)
       // update URL display. I still think we can do this with router somehow :S
@@ -102,12 +104,12 @@
         time: '',
         quill: '',
         uri: '',
-        stats: false
+        stats: false,
+        name: ''
       }
     },
     components: {
       Navbar,
-      Videocomponent,
       Audiocomponent,
       statcomponent,
       chatcomponent
@@ -153,10 +155,10 @@
   height: 90%;
 }
 .content-right{
-  width: 80%;
+  width: 76%;
 }
 .content-left{
-  width: 20%;
+  width: 24%;
   display: flex;
   flex-direction: column;
   align-items: center;
