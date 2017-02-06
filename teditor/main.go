@@ -52,7 +52,7 @@ func main() {
   /* <======end API======> */
 
   // Serve static files (make sure index has /client at start, so paths match)
-  s := http.StripPrefix("/client", http.FileServer(http.Dir("client")))
+  s := http.StripPrefix("/client", http.FileServer(http.Dir("../client")))
   r.PathPrefix("/client").Handler(s)
 
   // serve index.html to root, or any path we don't recognise.
@@ -64,5 +64,5 @@ func main() {
   log.Fatal(http.ListenAndServe(PORTREG, r))
 }
 func serveIndex(w http.ResponseWriter, r *http.Request) {
-  http.ServeFile(w, r, "client/index.html")
+  http.ServeFile(w, r, "../client/index.html")
 }
