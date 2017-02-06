@@ -128,6 +128,7 @@ function nParse(src){
 function stats(req, res) {
   // console.log('stats post received, reqbody:', req.body.text)
   var words = req.body.text.split(/[ \n\,\.\!\?]+/).filter(i => i !== '')
+  console.log('words:', words, 'reqbody', req.body.text)
   var wordFreqObj = words
                 .map(i=>i.length).sort((a,b)=>a-b)
                 .reduce((m, i)=>{
@@ -138,7 +139,7 @@ function stats(req, res) {
                   }
                   return m
                 }, {})
-  console.log(wordFreqObj)
+  // console.log(wordFreqObj)
   var wordLen = []
   for (var key in wordFreqObj){
     wordLen.push([key, wordFreqObj[key]])

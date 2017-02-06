@@ -31,7 +31,9 @@
           })
       },
       getStats() {
-        $.post('/stats', {text: $('.ql-editor').text()})
+        console.log(this.quill.getText())
+        //$('.ql-editor').text()
+        $.post('/stats', {text: this.quill.getText()})
           .then(res=>{
             console.log(res)
             var wordDistCTX = document.getElementById('wordDist').getContext('2d')
