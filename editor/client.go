@@ -100,8 +100,6 @@ func serveWS(w http.ResponseWriter, r *http.Request) {
 	ws, err := upgrader.Upgrade(w, r, nil)
 	vars := mux.Vars(r)
 
-  fmt.Println("New socket opened at channel:", vars["channel"])
-
 	if err != nil {
 		log.Println("you have failed in serving the WS master", err)
 		return

@@ -17,25 +17,17 @@
     props: ['quill'],
     methods: {
       analyseSentiment(tog) {
-        console.log('toggle:',tog)
         var delta = this.quill.getContents()
-        //
-        // console.log('Outgoing Delta:', delta)
         $.post('/sentiment', {content: JSON.stringify(delta), toggle: tog})
           .then(res=>{
             var sentiment_update = JSON.parse(res)
-            //
-            // console.log('Incoming Delta:',sentiment_update)
             this.quill.setContents(sentiment_update, 'user')
             this.quill.update()
           })
       },
       getStats() {
-        console.log(this.quill.getText())
-        //$('.ql-editor').text()
         $.post('/stats', {text: this.quill.getText()})
           .then(res=>{
-            console.log(res)
             var wordDistCTX = document.getElementById('wordDist').getContext('2d')
             var wordDistData = {labels: [], datasets: [{
               backgroundColor: [],

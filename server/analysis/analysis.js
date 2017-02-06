@@ -5,10 +5,8 @@ let wordpos = new WordPOS()
 
 function sent(req, res) {
   if (req.body.toggle === 'off'){
-    // console.log("Toggle off, should go to removeSent")
     return removeSent(req, res)
   }
-  // console.log("TOGGLE:", req.body.toggle)
 
   var source = nParse(JSON.parse(req.body.content))
   var result = {ops: []}
@@ -36,12 +34,10 @@ function sent(req, res) {
               attr = {}
             } else {
               for (var key in line.attributes){
-                console.log('copy attribute:', key)
                 sentenceAttr[key] = line.attributes[key]
               }
             }
             sentenceAttr[sent] = true
-            console.log('sentenceAttr is now:', sentenceAttr)
             result.ops.push({attributes: sentenceAttr, insert: sentence})
           }
         })
@@ -65,12 +61,10 @@ function removeSent(req, res) {
     }
     return line
   })
-  console.log('Remove Sent, source is:', source)
   res.status(201).send(JSON.stringify(source))
 }
 
 function nParse(src){
-  // console.log('nParse source:', src)
   var clean = {ops: []}
   src.ops.forEach(line=>{
     if (!/\n/.test(line.insert)){
@@ -81,7 +75,6 @@ function nParse(src){
         attr = line.attributes
       }
       var nSplit = line.insert.split('\n')
-      // console.log('nSplit:', nSplit)
       nSplit.forEach((val, ind)=>{
         var insert = val.trim()
         if (insert.length > 0){
@@ -121,14 +114,11 @@ function nParse(src){
       })
     }
   })
-  // console.log('nParse result:', clean)
   return clean
 }
 
 function stats(req, res) {
-  // console.log('stats post received, reqbody:', req.body.text)
   var words = req.body.text.split(/[ \n\,\.\!\?]+/).filter(i => i !== '')
-  console.log('words:', words, 'reqbody', req.body.text)
   var wordFreqObj = words
                 .map(i=>i.length).sort((a,b)=>a-b)
                 .reduce((m, i)=>{
@@ -139,7 +129,6 @@ function stats(req, res) {
                   }
                   return m
                 }, {})
-  // console.log(wordFreqObj)
   var wordLen = []
   for (var key in wordFreqObj){
     wordLen.push([key, wordFreqObj[key]])
@@ -151,7 +140,7 @@ function stats(req, res) {
     shortest = shortest.length < w.length ? shortest : w
     longest = longest.length > w.length ? longest : w
   })
-  console.log('words:', words, 'wordLen', wordLen, shortest, longest)
+
   var freq = {}
   freq.shortest = shortest
   freq.longest = longest

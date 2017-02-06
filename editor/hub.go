@@ -63,9 +63,7 @@ func (h *hub) run() {
       }
     case m := <- h.broadcast:
       clients := h.channels[m.channel]
-       // fmt.Println("broadcasting message to ", clients, "data is: ", string(m.data))
       for c := range clients {
-        fmt.Println("broadcasting message to ", c, "data is: ", string(m.data))
         select {
         case c.send <- m.data:
         contents[m.channel] = string(m.data)
