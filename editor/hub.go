@@ -1,6 +1,6 @@
 package main
 
- import "fmt"
+ // import "fmt"
 
 // hub handles registering/unregistering of clients to channels
 // and broadcast of messages to all clients in each channel.
