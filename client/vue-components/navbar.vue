@@ -85,7 +85,7 @@
     display: inline-flex;
     color: white;
     background-color: rgb(24, 24, 24);
-    height: 10vh;
+    height: 5vh;
     width: 100vw;
     border: none;
   }
